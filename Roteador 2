@@ -1,0 +1,78 @@
+Enable
+configure terminal
+hostname RT-02
+banner motd " APENAS ACESSE SE FOR AUTORIZADO "
+enable secret SenhaEnable
+line console 0
+password SenhaConsole 
+login
+exit
+Username administrador privilege 15 secret SenhaAdmin
+username estagiario privilege 1 secret SenhaEst
+line vty 0 15
+transport input ssh
+exec-timeout 5
+login local
+exit
+service password-encryption
+interface gigabitethernet 0/1
+ip address 10.0.0.1 255.0.0.0
+description REDE 2
+no shutdown 
+exit
+login block-for 180 attempts 3 within 60
+security passwords min-length 8
+interface serial 0/0/1
+ip route 192.168.0.0 255.255.224.0 200.200.200.1
+interface serial 0/0/1
+no shutdown
+interface serial 0/0/0
+ip route 192.168.32.0 255.255.248.0 200.200.200.8
+interface serial 0/0/0
+no shutdown
+interface serial 0/1/1
+ip route 172.16.0.0 255.240.0.0 200.200.200.10
+interface serial 0/1/1
+no shutdown
+exit
+interface g0/0.50
+encapsulation dot1q 50
+ip address 10.0.0.1 255.0.0.0
+exit
+interface g0/0.60
+encapsulation dot1q 60
+ip address 10.0.0.1 255.0.0.0
+exit
+interface g0/0.70
+encapsulation dot1q 70
+ip address 10.0.0.1 255.0.0.0
+exit
+interface g0/0.80
+encapsulation dot1q 80
+ip address 10.0.0.1 255.0.0.0
+exit
+
+ip route 201.187.89.0 255.255.255.252 200.200.200.1
+ip route 201.187.89.0 255.255.255.252 200.200.200.10
+ip route 192.168.0.0 255.255.224.0 200.200.200.1
+ip route 192.168.0.0 255.255.224.0 200.200.200.10
+ip route 172.16.0.0 255.240.0.0 200.200.200.1
+ip route 172.16.0.0 255.240.0.0 200.200.200.10
+
+ip route 201.187.89.20 255.255.255.252 200.200.200.1
+ip route 201.187.89.20 255.255.255.252 200.200.200.8
+ip route 192.168.0.0 255.255.224.0 200.200.200.1
+ip route 192.168.0.0 255.255.224.0 200.200.200.8
+ip route 192.168.32.0 255.255.248.0 200.200.200.1
+ip route 192.168.32.0 255.255.248.0 200.200.200.8
+
+ip route 201.187.89.12 255.255.255.252 200.200.200.8
+ip route 201.187.89.12 255.255.255.252 200.200.200.10
+ip route 192.168.32.0 255.255.248.0 200.200.200.8
+ip route 192.168.32.0 255.255.248.0 200.200.200.10
+ip route 172.16.0.0 255.240.0.0 200.200.200.8
+ip route 172.16.0.0 255.240.0.0 200.200.200.10
+
+do wr
+
+
