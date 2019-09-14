@@ -1,0 +1,60 @@
+ENABLE
+configure terminal
+hostname SW-04
+banner motd " APENAS ACESSE SE FOR AUTORIZADO "
+enable secret SenhaEnable
+line console 0
+password SenhaConsole
+login
+exit
+Username administrador privilege 15 secret SenhaAdimin
+username estagiario privilege 1 secret SenhaEst
+line vty 0 15
+transport input ssh
+exec-timeout 5
+login local
+exit
+service password-encryption
+vlan 88
+name SERVIDORES
+EXIT
+VLAN 200
+name VOZ
+EXIT
+VLAN 90
+NAME TACAS
+EXIT
+VLAN 88
+NAME MONITORAMENTO
+EXIT
+interface fastethernet0/1
+switchport mode access
+switch access vlan 88
+interface fastethernet0/10
+switchport mode access
+switch access vlan 200
+interface fastethernet0/13
+switchport mode access
+switchport access vlan 90
+interface fastethernet0/15
+switchport mode access 
+switchport access vlan 88
+interface vlan 1
+ip address 172.240.255.254 255.240.0.0
+description REDE 4
+no shutdown
+exit
+ip default-gateway 172.16.0.1
+interface fastethernet0/20
+switchport mode trunk
+switchport trunk native vlan 88
+switchport trunk allowed vlan 88
+switchport trunk allowed vlan add 200
+switchport trunk allowed vlan add 90
+switchport trunk allowed vlan add 88
+exit
+hostname SW-04
+do wr
+
+
+
