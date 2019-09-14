@@ -1,0 +1,56 @@
+ENABLE
+configure terminal
+hostname SW-03
+banner motd " APENAS ACESSE SE FOR AUTORIZADO "
+enable secret SenhaEnable
+line console 0
+password SenhaConsole
+login
+exit
+Username administrador privilege 15 secret SenhaAdimin
+username estagiario privilege 1 secret SenhaEst
+line vty 0 15
+transport input ssh
+exec-timeout 5
+login local
+exit
+service password-encryption
+vlan 80
+name FINANCIAS
+EXIT
+VLAN 60
+name OPERACOES
+EXIT
+VLAN 88
+NAME RELOGIOS
+EXIT
+VLAN 100
+NAME LIVRE
+EXIT
+interface fastethernet0/1
+switchport mode access
+switch access vlan 80
+interface fastethernet0/6
+switchport mode access
+switch access vlan 60
+interface fastethernet0/10
+switchport mode access
+switchport access vlan 88
+interface fastethernet0/20
+switchport mode access 
+switchport access vlan 100
+interface vlan 1
+ip address 192.168.248.254 255.255.248.0
+description REDE 3
+no shutdown
+exit
+ip default-gateway 192.168.32.1
+interface fastethernet0/15
+switchport mode trunk
+switchport trunk native vlan 88
+switchport trunk allowed vlan 80
+switchport trunk allowed vlan add 60
+switchport trunk allowed vlan add 88
+switchport trunk allowed vlan add 100
+exit
+do wr
